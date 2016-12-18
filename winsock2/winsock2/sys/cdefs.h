@@ -65,6 +65,7 @@
 #include <ole2.h>
 
 #undef NO_ERROR
+#undef WAIT_FAILED
 
 #define alignof   __alignof
 

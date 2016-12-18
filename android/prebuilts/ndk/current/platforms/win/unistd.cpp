@@ -1,5 +1,4 @@
 /*
- * Copyright (C) 2010 Apple Inc. All rights reserved.
  * Copyright (C) 2013 Naver Corp. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,6 +43,11 @@ pid_t gettid(void)
 int access(const char * pathname, int mode)
 {
     return _access(pathname, mode);
+}
+
+int link(const char * path1, const char * path2)
+{
+    return ::CreateHardLinkA(path2, path1, NULL) != 0 ? 0 : -1;
 }
 
 int pipe(int * pipefd)

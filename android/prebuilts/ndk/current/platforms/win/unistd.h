@@ -72,6 +72,7 @@ extern pid_t    gettid(void);
 #define F_OK    0  /* Existence */
 
 extern int      access(const char *, int);
+extern int      link(const char *, const char *);
 extern int      pipe(int *);
 
 extern int      close(int);
