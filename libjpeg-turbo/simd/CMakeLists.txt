@@ -1,3 +1,4 @@
+if(NOT ANDROID)
 if(NOT DEFINED NASM)
   set(NASM nasm CACHE FILEPATH "Path to NASM/YASM executable")
 endif()
@@ -11,7 +12,7 @@ else()
     set(NAFLAGS -fwin32 -DWIN32)
   endif()
 endif()
-set(NAFLAGS ${NAFLAGS} -I${CMAKE_SOURCE_DIR}/win/ -I${CMAKE_CURRENT_SOURCE_DIR}/)
+set(NAFLAGS ${NAFLAGS} -I${CMAKE_CURRENT_SOURCE_DIR}/../win/ -I${CMAKE_CURRENT_SOURCE_DIR}/)
 
 # This only works if building from the command line.  There is currently no way
 # to set a variable's value based on the build type when using the MSVC IDE.
@@ -78,3 +79,29 @@ endforeach()
 
 set(SIMD_OBJS ${SIMD_OBJS} PARENT_SCOPE)
 add_custom_target(simd DEPENDS ${SIMD_OBJS})
+else() # NOT ANDROID
+enable_language(C ASM)
+set(ASM_OPTIONS "-x assembler-with-cpp")
+set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} ${ASM_OPTIONS}")
+
+add_definitions(-DWITH_SIMD -DMOTION_JPEG_SUPPORTED)
+
+if(ANDROID_ABI STREQUAL "x86")
+    set(SIMD_SRC ../jsimd_none.c)
+elseif(ANDROID_ABI STREQUAL "mips" OR
+    ANDROID_ABI STREQUAL "armeabi" OR
+    ANDROID_ABI STREQUAL "armeabi-v6 with VFP")
+    set(SIMD_SRC ../jsimd_none.c)
+elseif(ANDROID_ABI STREQUAL "armeabi-v7a" OR
+    ANDROID_ABI STREQUAL "armeabi-v7a with VFPV3" OR
+    ANDROID_ABI STREQUAL "armeabi-v7a with NEON")
+    set(SIMD_SRC jsimd_arm.c jsimd_arm_neon.S)
+else()
+    message(FATAL_ERROR "Unknown ANDROID_ABI=\"${ANDROID_ABI}\" is specified.")
+endif()
+
+add_library(simd OBJECT ${SIMD_SRC})
+set(SIMD_OBJS $<TARGET_OBJECTS:simd> PARENT_SCOPE)
+else() # NOT ANDROID
+message(FATAL_ERROR "Unsupported platform.")
+endif() # NOT ANDROID
