@@ -9,10 +9,9 @@ giflib          android-4.1.6
 harfbuzz        0.9.24
 hyphenation     android(2008)
 icu             chromium-52.1
-jpeg-turbo      chromium-1.2.80
-jpeg            6b  27-Mar-1998
 jsoncpp         dist 0.10.5
 libdl           dlfcn-win32(2007)
+libjpeg-turbo   chromium-1.4.90
 libpng          1.6.15
 libxml2         android-2.7.6
 libxslt         android-1.1.26
