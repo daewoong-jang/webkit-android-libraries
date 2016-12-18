@@ -25,10 +25,10 @@ if (WIN32)
     add_library(${NAME} SHARED ${PTHREADNP_SOURCES})
 
     string(REPLACE "/" "\\" PTHREAD_DLL "${CMAKE_SOURCE_DIR}/pthreadnp/pthreads-win32/lib$(PLATFORMARCHITECTURE)/pthreadVC2.dll")
-    string(REPLACE "/" "\\" PTHREAD_DLL_PATH "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$<CONFIG>")
+    string(REPLACE "/" "\\" PTHREAD_DLL_PATH "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
     string(REPLACE "/" "\\" PTHREAD_LIB "${CMAKE_SOURCE_DIR}/pthreadnp/pthreads-win32/lib$(PLATFORMARCHITECTURE)/pthreadVC2.lib")
-    string(REPLACE "/" "\\" PTHREAD_LIB_PATH "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$<CONFIG>")
+    string(REPLACE "/" "\\" PTHREAD_LIB_PATH "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
     add_custom_command(TARGET ${NAME}
                    PRE_BUILD

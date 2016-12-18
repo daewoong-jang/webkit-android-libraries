@@ -31,7 +31,7 @@ if (WIN32)
     set(WIN32_SYSTEM_LIBRARIES concrt libcmt libcpmt msvcrt OLDNAMES Version vcruntime ucrt Shlwapi)
 
     add_definitions(-DWIN32_POSIX -D_WINSOCKAPI_ -D__STDC_FORMAT_MACROS -DHAVE_STRUCT_TIMESPEC)
-    add_definitions(-DGL_GLEXT_PROTOTYPES -DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DLIBXML_STATIC -DLIBXSLT_STATIC -DXMD_H)
+    add_definitions(-DGL_GLEXT_PROTOTYPES -DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DLIBXML_STATIC -DLIBXSLT_STATIC)
 
     include_directories("${CMAKE_SOURCE_DIR}/android/prebuilts/ndk/current/platforms/win" "${CMAKE_SOURCE_DIR}/winsock2")
 
@@ -53,6 +53,7 @@ add_subdirectory(fontconfig)
 add_subdirectory(giflib)
 add_subdirectory(hyphenation)
 add_subdirectory(icu)
+add_subdirectory(libjpeg-turbo)
 add_subdirectory(libpng)
 add_subdirectory(libxml2)
 add_subdirectory(libxslt)
@@ -69,7 +70,6 @@ add_dependencies(xml2 icuin)
 if (WIN32) # Windows.
     add_subdirectory(android/prebuilts/ndk/current/platforms)
     add_subdirectory(android/system/core/liblog)
-    add_subdirectory(jpeg)
     add_subdirectory(jsoncpp)
     add_subdirectory(libdl)
     add_subdirectory(webp)
@@ -83,5 +83,4 @@ if (WIN32) # Windows.
 else () # Android.
     add_subdirectory(freetype)
     add_subdirectory(harfbuzz)
-    add_subdirectory(jpeg-turbo)
 endif ()
