@@ -1,5 +1,7 @@
 /*
- * Copyright (C) 2014 Naver Corp. All rights reserved.
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
+ * Copyright (C) 2013 Naver Corp.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,33 +26,10 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef _WS2_SHIMS_H_
-#define _WS2_SHIMS_H_
 
-#include <winsock2/Ws2_32.h>
+#ifndef _SYS_CDEFS_H_
+#define _SYS_CDEFS_H_
 
-__BEGIN_DECLS
+#include "../win/sys/cdefs.h"
 
-int     WSAAPI  closesocket(SOCKET s);
-int     WSAAPI  ioctlsocket(SOCKET s, long cmd, _Inout_ u_long FAR* argp);
-
-u_long  WSAAPI  htonl(u_long hostlong);
-u_short WSAAPI  htons(u_short hostshort);
-u_long  WSAAPI  ntohl(u_long netlong);
-u_short WSAAPI  ntohs(u_short netshort);
-
-int     WSAAPI  WSAStartup(WORD wVersionRequested, _Out_ LPWSADATA lpWSAData);
-int     WSAAPI  WSACleanup(void);
-
-void    WSAAPI  WSASetLastError(int iError);
-int     WSAAPI  WSAGetLastError(void);
-
-int     WSAAPI  WSAIoctl(SOCKET s, DWORD dwIoControlCode, _In_reads_bytes_opt_(cbInBuffer) LPVOID lpvInBuffer, DWORD cbInBuffer,
-    _Out_writes_bytes_to_opt_(cbOutBuffer, *lpcbBytesReturned) LPVOID lpvOutBuffer, DWORD cbOutBuffer, _Out_ LPDWORD lpcbBytesReturned,
-    _Inout_opt_ LPWSAOVERLAPPED lpOverlapped, _In_opt_ LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
-
-int PASCAL FAR  __WSAFDIsSet(SOCKET fd, fd_set FAR *);
-
-__END_DECLS
-
-#endif /* _WS2_SHIMS_H_ */
+#endif // _SYS_CDEFS_H_

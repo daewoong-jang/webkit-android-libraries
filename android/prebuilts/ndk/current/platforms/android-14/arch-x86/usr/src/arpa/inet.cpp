@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Naver Corp. All rights reserved.
+ * Copyright (C) 2013 Naver Corp. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,25 +25,32 @@
  * SUCH DAMAGE.
  */
 
-#include "system_properties.h"
-#include <cstring>
-#include <stdlib.h>
+#include "arpa/inet.h"
 
 #if defined(WIN32) || defined(_WINDOWS)
-int __system_property_get(const char *name, char *value)
-{
-    char* propValue = getenv(name);
-    if (!propValue) {
-        value[0] = '\0';
-        return 0;
-    }
 
-    int length = strlen(propValue);
-    if (length == 0) {
-        value[0] = '\0';
-    } else {
-        strncpy(value, propValue, PROP_VALUE_MAX);
-    }
-    return length;
+#include <windows.h>
+#include <errno.h>
+
+uint32_t      inet_addr(const char * cp)
+{
+    return FORWARD_CALL(INET_ADDR)(cp);
 }
+
+int           inet_aton(const char * cp, struct in_addr * inp)
+{
+    inp->S_un.S_addr = (int)inet_addr(cp);
+    return inp->S_un.S_addr;
+}
+
+int           inet_pton(int af, const char * src, void * dst)
+{
+    return FORWARD_CALL(INET_PTONA)(af, src, dst);
+}
+
+const char*   inet_ntop(int af, const void * src, char * dst, size_t size)
+{
+    return FORWARD_CALL(INET_NTOPA)(af, (PVOID)src, dst, size);
+}
+
 #endif
