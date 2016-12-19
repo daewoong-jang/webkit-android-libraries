@@ -96,6 +96,7 @@ if(WIN32)
     # Add "_imp" as a suffix before the extension to avoid conflicting with the statically linked "libcurl.lib"
     set_target_properties(${LIB_NAME} PROPERTIES IMPORT_SUFFIX "_imp.lib")
   endif()
+  set_target_properties(${LIB_NAME} PROPERTIES OUTPUT_NAME curl)
 endif()
 
 install(TARGETS ${LIB_NAME}

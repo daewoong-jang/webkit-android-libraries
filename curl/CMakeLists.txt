@@ -355,7 +355,7 @@ include_directories(${CMAKE_SOURCE_DIR}/boringssl/include)
 if(WIN32)
   add_definitions(-DALLOW_MSVC6_WITHOUT_PSDK)
   include_directories(${CMAKE_SOURCE_DIR}/zlib)
-  set(CURL_LIBS ssl crypto zlib)
+  set(CURL_LIBS ssl crypto z)
 endif(WIN32)
 
 # (WebKit) Removed configuration calculations
