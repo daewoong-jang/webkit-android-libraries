@@ -40,7 +40,7 @@
 #include "regexst.h"
 #include "regextxt.h"
 
-
+#undef IN
 
 U_NAMESPACE_BEGIN
 
