@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 Naver Corp. All rights reserved.
+ * Copyright (C) 2016 Daewoong Jang.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,35 +24,13 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef _WIN_SYS_TYPES_H_
+#define _WIN_SYS_TYPES_H_
 
-#include "poll.h"
-#include <assert.h>
+typedef dev_t       _dev_t;
+typedef ino_t       _ino_t;
+typedef off_t       _off_t;
+typedef loff_t      _loff_t;
+typedef pid_t       _pid_t;
 
-#if defined(WIN32) || defined(_WINDOWS)
-
-#include "win/unixfd.h"
-
-int poll(struct pollfd * fds, nfds_t nfds, long timeout)
-{
-    size_t bytes = sizeof(pollfd) * nfds;
-    pollfd* _fds = (pollfd*)::malloc(bytes);
-    memcpy(_fds, fds, bytes);
-
-    for (nfds_t i = 0; i < nfds; ++i) {
-        UnixFD* ufd = UnixFD::get(_fds[i].fd);
-        assert(ufd->isSocket());
-        _fds[i].fd = (SOCKET)ufd->osHandle();
-    }
-
-    int retval = FORWARD_CALL(WSAPOLL)(_fds, nfds, timeout);
-
-    for (nfds_t i = 0; i < nfds; ++i) {
-        fds[i].revents = _fds[i].revents;
-    }
-
-    ::free(_fds);
-
-    return retval;
-}
-
-#endif
+#endif // _WIN_SYS_TYPES_H_

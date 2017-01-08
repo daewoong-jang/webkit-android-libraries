@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 Naver Corp. All rights reserved.
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,35 +25,38 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+#ifndef _SYS_TYPES_H_
+#define _SYS_TYPES_H_
 
-#include "poll.h"
-#include <assert.h>
+#define __need_size_t
+#define __need_ptrdiff_t
+#include <stddef.h>
+#include <stdint.h>
+#include <sys/cdefs.h>
 
-#if defined(WIN32) || defined(_WINDOWS)
+#include <linux/posix_types.h>
+#include <asm/types.h>
 
-#include "win/unixfd.h"
+typedef __u32    __kernel_dev_t;
 
-int poll(struct pollfd * fds, nfds_t nfds, long timeout)
-{
-    size_t bytes = sizeof(pollfd) * nfds;
-    pollfd* _fds = (pollfd*)::malloc(bytes);
-    memcpy(_fds, fds, bytes);
+typedef __kernel_dev_t       dev_t;
+typedef __kernel_ino_t       ino_t;
+#ifndef _OFF_T_DEFINED_
+#define _OFF_T_DEFINED_
+typedef __kernel_off_t       off_t;
+#endif
+typedef __kernel_loff_t      loff_t;
+typedef loff_t               off64_t;  /* GLibc-specific */
 
-    for (nfds_t i = 0; i < nfds; ++i) {
-        UnixFD* ufd = UnixFD::get(_fds[i].fd);
-        assert(ufd->isSocket());
-        _fds[i].fd = (SOCKET)ufd->osHandle();
-    }
+typedef __kernel_pid_t		 pid_t;
 
-    int retval = FORWARD_CALL(WSAPOLL)(_fds, nfds, timeout);
+#ifndef _SSIZE_T_DEFINED_
+#define _SSIZE_T_DEFINED_
+typedef int  ssize_t;
+#endif
 
-    for (nfds_t i = 0; i < nfds; ++i) {
-        fds[i].revents = _fds[i].revents;
-    }
+typedef __kernel_uid32_t        uid_t;
 
-    ::free(_fds);
-
-    return retval;
-}
+#include <win/sys/types.h>
 
 #endif

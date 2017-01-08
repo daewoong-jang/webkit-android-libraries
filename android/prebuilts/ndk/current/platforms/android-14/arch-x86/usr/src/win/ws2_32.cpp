@@ -26,6 +26,7 @@
  */
 
 #include "Ws2_32.h"
+#include <assert.h>
 
 #if defined(WIN32)
 
@@ -40,7 +41,7 @@ static HMODULE getModuleHandle(const char* moduleName)
     HMODULE module = GetModuleHandleA(moduleName);
     if (!module) {
         module = LoadLibraryA(moduleName);
-        ASSERT(module);
+        assert(module);
     }
     return module;
 }
@@ -202,7 +203,7 @@ extern "C" {
 int     WinSock2WSAStartup(WORD wVersionRequested, _Out_ LPWSADATA lpWSAData)
 {
     if (!initializeWSA2Shims()) {
-        ASSERT(0);
+        assert(0);
         return SOCKET_ERROR;
     }
 

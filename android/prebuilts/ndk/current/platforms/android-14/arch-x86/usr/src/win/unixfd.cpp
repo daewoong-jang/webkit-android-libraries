@@ -85,7 +85,7 @@ UnixFD::~UnixFD()
 
 int UnixFD::osfd()
 {
-    ASSERT(m_type == File);
+    assert(m_type == File);
     return m_osfd;
 }
 
@@ -287,7 +287,7 @@ int UnixFD::adopt(pid_t source_pid, void* oshandle, Type type)
     else {
         // Copy the handle into our process and close the handle that the sending process created for us.
         BOOL success = ::DuplicateHandle(source_process, oshandle, ::GetCurrentProcess(), &duplicated_handle, 0, FALSE, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE);
-        ASSERT(success);
+        assert(success);
     }
 
     ::CloseHandle(source_process);
@@ -433,7 +433,7 @@ int UnixFD::dup()
 
 int UnixFD::dup2(int newfd)
 {
-    ASSERT(0);
+    assert(0);
     return _dup2(osfd(), newfd);
 }
 

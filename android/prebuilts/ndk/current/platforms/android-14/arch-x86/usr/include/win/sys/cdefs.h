@@ -25,8 +25,8 @@
  * SUCH DAMAGE.
  */
 
-#ifndef _WS2_32_SYS_CDEFS_H_INCLUDED_
-#define _WS2_32_SYS_CDEFS_H_INCLUDED_
+#ifndef _WIN_SYS_CDEFS_H_INCLUDED_
+#define _WIN_SYS_CDEFS_H_INCLUDED_
 
 #if defined(__cplusplus)
 #define	EXTERN_C            extern "C"
@@ -62,7 +62,13 @@
 #define NTDDI_WIN7SP1               0x06010100
 #endif
 #include <windows.h>
-#include <ole2.h>
+#ifndef far
+#define far
+#endif
+#ifndef near
+#define near
+#endif
+#include <timeapi.h>
 
 #undef NO_ERROR
 #undef WAIT_FAILED
@@ -71,23 +77,6 @@
 
 #define __attribute__(x)
 
-#include <assert.h>
-#ifndef ASSERT
-#define ASSERT assert
-#endif
-
-#ifndef __STDC__
-#include <sys/types.h>
-#define __STDC__ 1
-#endif
-
 #include <android/api-level.h>
 
-#undef ssize_t
-
-typedef intptr_t ssize_t;
-typedef int pid_t;
-typedef long long off64_t;
-typedef unsigned int uid_t;
-
-#endif // _WS2_32_SYS_CDEFS_H_INCLUDED_
+#endif // _WIN_SYS_CDEFS_H_INCLUDED_

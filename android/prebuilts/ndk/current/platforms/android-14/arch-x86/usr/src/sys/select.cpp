@@ -31,6 +31,7 @@
 
 #include "win/unixfd.h"
 #include "win/timer_resolution_controller.h"
+#include <assert.h>
 
 // Derived from code from Windows winsock.h
 void FD_CLR(int fd, fd_set * set)
@@ -81,7 +82,7 @@ static fd_set * convert_fd_set(fd_set * set)
 
     for (u_int i = 0; i < set->fd_count; ++i) {
         UnixFD* fd = UnixFD::get(set->fd_array[i]);
-        ASSERT(fd->descriptorType() == UnixFD::Socket);
+        assert(fd->descriptorType() == UnixFD::Socket);
         set->fd_array[i] = (SOCKET)fd->osHandle();
     }
     return set;

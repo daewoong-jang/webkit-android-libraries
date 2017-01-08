@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 Naver Corp. All rights reserved.
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,11 +25,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
 #ifndef _SYS_SOCKET_H_
 #define _SYS_SOCKET_H_
 
 #include <sys/select.h>
+#include <sys/types.h>
 #include <linux/socket.h>
 
 #ifdef WIN32
@@ -39,8 +40,8 @@
 
 __BEGIN_DECLS
 
-#define SOCK_STREAM     1
-#define SOCK_DGRAM      2
+#define SOCK_STREAM      1
+#define SOCK_DGRAM       2
 #undef  SOCK_RAW
 #undef  SOCK_RDM
 #undef  SOCK_SEQPACKET
