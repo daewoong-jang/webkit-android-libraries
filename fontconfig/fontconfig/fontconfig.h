@@ -570,19 +570,11 @@ FcFontSetAdd (FcFontSet *s, FcPattern *font);
 FcPublic FcConfig *
 FcInitLoadConfig (void);
 
-#ifdef ANDROID
-FcPublic FcConfig *
-FcInitLoadConfigAndFonts(const char *path);
-
-FcPublic FcBool
-FcInit(const char *path);
-#else
 FcPublic FcConfig *
 FcInitLoadConfigAndFonts (void);
 
 FcPublic FcBool
 FcInit (void);
-#endif
 
 FcPublic void
 FcFini (void);

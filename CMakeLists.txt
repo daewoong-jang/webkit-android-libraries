@@ -61,6 +61,7 @@ add_subdirectory(pixman)
 add_subdirectory(pthreadnp)
 add_subdirectory(safeint)
 add_subdirectory(sqlite)
+add_subdirectory(webp)
 
 add_dependencies(libcurl ssl crypto)
 add_dependencies(icuin icuuc)
@@ -72,7 +73,6 @@ if (WIN32) # Windows.
     add_subdirectory(android/system/core/liblog)
     add_subdirectory(jsoncpp)
     add_subdirectory(libdl)
-    add_subdirectory(webp)
     add_subdirectory(wtl)
     add_subdirectory(zlib)
 

@@ -586,37 +586,9 @@ FcPrivate void
 FcDirCacheReference (FcCache *cache, int nref);
 
 /* fccfg.c */
-#ifdef ANDROID
-FcBool
-FcInit(const char *path);
-#else
-FcBool
-FcInit(void);
-#endif
 
-#ifdef ANDROID
 FcPrivate FcBool
-FcConfigInit(const char *path);
-#else
-FcPrivate FcBool
-FcConfigInit(void);
-#endif
-
-#ifdef ANDROID
-FcConfig *
-FcInitLoadOwnConfig(FcConfig *config, const char *fontDirPath);
-#else
-FcPrivate FcConfig *
-FcInitLoadOwnConfig(FcConfig *config);
-#endif
-
-#ifdef ANDROID
-FcConfig *
-FcInitLoadOwnConfigAndFonts(FcConfig *config, const char *fontDirPath);
-#else
-FcPrivate FcConfig *
-FcInitLoadOwnConfigAndFonts(FcConfig *config);
-#endif
+FcConfigInit (void);
 
 FcPrivate void
 FcConfigFini (void);
@@ -877,6 +849,13 @@ FcHashGetSHA256DigestFromFile (const FcChar8 *filename);
 FcPrivate FcChar8 *
 FcHashGetSHA256DigestFromMemory (const char *fontdata,
 				 size_t      length);
+
+/* fcinit.c */
+FcPrivate FcConfig *
+FcInitLoadOwnConfig (FcConfig *config);
+
+FcPrivate FcConfig *
+FcInitLoadOwnConfigAndFonts (FcConfig *config);
 
 /* fcxml.c */
 FcPrivate void

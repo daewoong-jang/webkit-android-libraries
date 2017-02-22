@@ -157,6 +157,7 @@ if (WIN32)
 
     include_directories(
         "${ANGLE_LIBRARY_DIR}/include"
+        "${ANGLE_LIBRARY_DIR}"
         "${CMAKE_SOURCE_DIR}/jpeg"
         "${CMAKE_SOURCE_DIR}/zlib"
     )

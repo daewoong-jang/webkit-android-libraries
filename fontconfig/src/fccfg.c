@@ -34,32 +34,6 @@
 
 static FcConfig    *_fcConfig; /* MT-safe */
 
-#ifdef ANDROID
-static FcConfig *
-FcConfigEnsure(const char* fontDirPath)
-{
-    FcConfig	*config;
-retry:
-    config = fc_atomic_ptr_get(&_fcConfig);
-    if (!config)
-    {
-        config = FcInitLoadConfigAndFonts(fontDirPath);
-
-        if (!fc_atomic_ptr_cmpexch(&_fcConfig, NULL, config)) {
-            FcConfigDestroy(config);
-            goto retry;
-        }
-    }
-    return config;
-}
-
-FcBool
-FcConfigInit(const char* fontDirPath)
-{
-    return FcConfigEnsure(fontDirPath) ? FcTrue : FcFalse;
-}
-
-#else
 static FcConfig *
 FcConfigEnsure (void)
 {
@@ -83,7 +57,6 @@ FcConfigInit (void)
 {
   return FcConfigEnsure () ? FcTrue : FcFalse;
 }
-#endif
 
 void
 FcConfigFini (void)
@@ -470,11 +443,7 @@ retry:
 FcConfig *
 FcConfigGetCurrent (void)
 {
-#ifdef ANDROID
-    return FcConfigEnsure ("");
-#else
     return FcConfigEnsure ();
-#endif
 }
 
 FcBool
@@ -2373,11 +2342,7 @@ FcConfigSetSysRoot (FcConfig      *config,
     config->sysRoot = s;
     if (init)
     {
-#ifdef ANDROID
-	config = FcInitLoadOwnConfigAndFonts (config, "");
-#else
-    config = FcInitLoadOwnConfigAndFonts (config);
-#endif
+	config = FcInitLoadOwnConfigAndFonts (config);
 	FcConfigSetCurrent (config);
     }
 }

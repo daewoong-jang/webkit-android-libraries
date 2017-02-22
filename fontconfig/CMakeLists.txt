@@ -18,7 +18,7 @@ set(FONTCONFIG_SOURCES
     src/fcfreetype.c
     src/fcfs.c
     src/fchash.c
-    src/fcinit-android.c
+    src/fcinit.c
     src/fclang.c
     src/fclist.c
     src/fcmatch.c

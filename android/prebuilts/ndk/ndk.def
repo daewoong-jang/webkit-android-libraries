@@ -51,6 +51,7 @@ EXPORTS
     poll
     gettid
     access
+    link
     pipe
     close
     lseek

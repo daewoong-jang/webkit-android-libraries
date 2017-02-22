@@ -35,16 +35,6 @@
 #pragma message("To suppress these warnings, define FC_NO_MT.")
 #endif
 
-#ifdef _WIN32 /* WINDOWS */
-#include <direct.h>
-
-static const char* FcDefaultFontsDirWin32()
-{
-    static char buffer[MAX_PATH];
-    return strcat(_getcwd(buffer, MAX_PATH), "\\fonts");
-}
-#endif
-
 static FcConfig *
 FcInitFallbackConfig (void)
 {
