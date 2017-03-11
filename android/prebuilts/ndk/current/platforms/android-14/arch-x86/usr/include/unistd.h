@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
  * All rights reserved.
- * Copyright (C) 2013 Naver Corp.
+ * Copyright (C) 2013 NAVER Corp.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -40,8 +40,6 @@
 #include <process.h>
 #include <shlwapi.h>
 #include <sys/stat.h>
-
-#define PATH_MAX MAX_PATH
 
 #undef lseek
 
