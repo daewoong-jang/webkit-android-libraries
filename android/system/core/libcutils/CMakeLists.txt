@@ -40,7 +40,6 @@ else ()
     set_source_files_properties(arch-arm/memset32.s PROPERTIES COMPILE_FLAGS "${CMAKE_ASM_FLAGS}")
 
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}
-         $(KERNEL_HEADERS)
          ../include
     )
 
