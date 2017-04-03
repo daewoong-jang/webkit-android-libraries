@@ -26,6 +26,11 @@ private:
     mutex_t* m_lock;
 };
 
+static void output_debug_string(const char *log)
+{
+    ::OutputDebugStringA(log);
+}
+
 static void sprintf_alog_header(char* buffer, int prio, const char *tag)
 {
     SYSTEMTIME system_time;
@@ -39,7 +44,7 @@ int __android_log_write(int prio, const char *tag, const char *text)
     sprintf_alog_header(log_buffer, prio, tag);
     strcat(log_buffer, text);
     strcat(log_buffer, "\r\n");
-    ::OutputDebugStringA(log_buffer);
+    output_debug_string(log_buffer);
     return 0;
 }
 
@@ -60,15 +65,15 @@ int __android_log_vprint(int prio, const char *tag,
     char* endptr = log_buffer + strlen(log_buffer);
     vsprintf(endptr, fmt, ap);
     strcat(log_buffer, "\r\n");
-    ::OutputDebugStringA(log_buffer);
+    output_debug_string(log_buffer);
     return 0;
 }
 
 void __android_log_assert(const char *cond, const char *tag, const char *fmt, ...)
 {
-    ::OutputDebugStringA("ASSERT: ");
-    ::OutputDebugStringA(cond);
-    ::OutputDebugStringA("\r\n");
+    output_debug_string("ASSERT: ");
+    output_debug_string(cond);
+    output_debug_string("\r\n");
     va_list args;
     va_start(args, fmt);
     __android_log_print(ANDROID_LOG_FATAL, tag, fmt, args);
