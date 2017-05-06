@@ -12,11 +12,8 @@
 #ifndef __LINUX_UIO_H
 #define __LINUX_UIO_H
 
-// from asm/posix_types.h
-typedef size_t __kernel_size_t;
-
-// from linux/compiler.h
-#define __user
+#include <linux/compiler.h>
+#include <linux/types.h>
 
 struct iovec
 {

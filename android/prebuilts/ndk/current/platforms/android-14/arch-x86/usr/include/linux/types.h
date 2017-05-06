@@ -9,32 +9,29 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef _LINUX_LIMITS_H
-#define _LINUX_LIMITS_H
+#ifndef _LINUX_TYPES_H
+#define _LINUX_TYPES_H
 
-#define NR_OPEN 1024
+#include <linux/posix_types.h>
+#include <asm/types.h>
 
-#define NGROUPS_MAX 65536
-#define ARG_MAX 131072
-#define CHILD_MAX 999
-#define OPEN_MAX 256
-#define LINK_MAX 127
-#define MAX_CANON 255
-#define MAX_INPUT 255
-#define NAME_MAX 255
-#define PATH_MAX 4096
-#define PIPE_BUF 4096
-#define XATTR_NAME_MAX 255
-#define XATTR_SIZE_MAX 65536
-#define XATTR_LIST_MAX 65536
+#define __bitwise__
+#define __bitwise
 
-#define RTSIG_MAX 32
-
-/* from sys/limits.h */
-#ifdef __LP64__
-# define LONG_BIT   64
-#else
-# define LONG_BIT   32
+typedef __u16 __bitwise __le16;
+typedef __u16 __bitwise __be16;
+typedef __u32 __bitwise __le32;
+typedef __u32 __bitwise __be32;
+#if defined(__GNUC__) && !defined(__STRICT_ANSI__)
+typedef __u64 __bitwise __le64;
+typedef __u64 __bitwise __be64;
 #endif
+
+struct ustat {
+ __kernel_daddr_t f_tfree;
+ __kernel_ino_t f_tinode;
+ char f_fname[6];
+ char f_fpack[6];
+};
 
 #endif

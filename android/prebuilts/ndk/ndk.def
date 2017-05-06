@@ -83,6 +83,9 @@ EXPORTS
     gethostbyname
     getservbyname
     __system_property_get
+    sigaction
+    sigsuspend
+    sigaltstack
     win32_open_osfhandle
     win32_release_osfhandle
     win32_get_osfhandle

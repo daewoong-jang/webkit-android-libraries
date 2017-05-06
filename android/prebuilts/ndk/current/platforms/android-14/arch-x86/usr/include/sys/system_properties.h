@@ -55,7 +55,7 @@ int __system_property_get(const char *name, char *value);
 ** lookups.  These returned pointers will remain valid for
 ** the lifetime of the system.
 */
-//const prop_info *__system_property_find(const char *name);
+const prop_info *__system_property_find(const char *name);
 
 /* Read the value of a system property.  Returns the length
 ** of the value.  Copies the value and \0 terminator into
@@ -66,7 +66,7 @@ int __system_property_get(const char *name, char *value);
 ** copied into the provided name pointer.  The name will
 ** be \0 terminated.
 */
-//int __system_property_read(const prop_info *pi, char *name, char *value);
+int __system_property_read(const prop_info *pi, char *name, char *value);
 
 /* Return a prop_info for the nth system property, or NULL if 
 ** there is no nth property.  Use __system_property_read() to
@@ -78,7 +78,7 @@ int __system_property_get(const char *name, char *value);
 ** Order of results may change from call to call.  This is
 ** not a bug.
 */ 
-//const prop_info *__system_property_find_nth(unsigned n);
+const prop_info *__system_property_find_nth(unsigned n);
 
 __END_DECLS
 

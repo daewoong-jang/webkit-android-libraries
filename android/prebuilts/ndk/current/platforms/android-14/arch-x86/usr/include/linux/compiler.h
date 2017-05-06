@@ -9,32 +9,34 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef _LINUX_LIMITS_H
-#define _LINUX_LIMITS_H
+#ifndef __LINUX_COMPILER_H
+#define __LINUX_COMPILER_H
 
-#define NR_OPEN 1024
+#ifndef __ASSEMBLY__
 
-#define NGROUPS_MAX 65536
-#define ARG_MAX 131072
-#define CHILD_MAX 999
-#define OPEN_MAX 256
-#define LINK_MAX 127
-#define MAX_CANON 255
-#define MAX_INPUT 255
-#define NAME_MAX 255
-#define PATH_MAX 4096
-#define PIPE_BUF 4096
-#define XATTR_NAME_MAX 255
-#define XATTR_SIZE_MAX 65536
-#define XATTR_LIST_MAX 65536
+#define __user
+#define __kernel
+#define __safe
+#define __force
+#define __nocast
+#define __iomem
+#define __chk_user_ptr(x) (void)0
+#define __chk_io_ptr(x) (void)0
+#define __builtin_warning(x, ...) (1)
+#define __acquires(x)
+#define __releases(x)
+#define __acquire(x) (void)0
+#define __release(x) (void)0
+#define __cond_lock(x) (x)
 
-#define RTSIG_MAX 32
-
-/* from sys/limits.h */
-#ifdef __LP64__
-# define LONG_BIT   64
-#else
-# define LONG_BIT   32
 #endif
 
+#ifndef __attribute_const__
+#define __attribute_const__
+#endif
+
+#endif
+
+#ifdef WIN32
+#define __inline__ __forceinline
 #endif

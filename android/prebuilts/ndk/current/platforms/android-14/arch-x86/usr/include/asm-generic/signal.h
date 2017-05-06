@@ -9,32 +9,19 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef _LINUX_LIMITS_H
-#define _LINUX_LIMITS_H
+#ifndef __ASM_GENERIC_SIGNAL_H
+#define __ASM_GENERIC_SIGNAL_H
 
-#define NR_OPEN 1024
+#include <linux/compiler.h>
 
-#define NGROUPS_MAX 65536
-#define ARG_MAX 131072
-#define CHILD_MAX 999
-#define OPEN_MAX 256
-#define LINK_MAX 127
-#define MAX_CANON 255
-#define MAX_INPUT 255
-#define NAME_MAX 255
-#define PATH_MAX 4096
-#define PIPE_BUF 4096
-#define XATTR_NAME_MAX 255
-#define XATTR_SIZE_MAX 65536
-#define XATTR_LIST_MAX 65536
-
-#define RTSIG_MAX 32
-
-/* from sys/limits.h */
-#ifdef __LP64__
-# define LONG_BIT   64
-#else
-# define LONG_BIT   32
+#ifndef SIG_BLOCK
+#define SIG_BLOCK 0  
+#endif
+#ifndef SIG_UNBLOCK
+#define SIG_UNBLOCK 1  
+#endif
+#ifndef SIG_SETMASK
+#define SIG_SETMASK 2  
 #endif
 
 #endif

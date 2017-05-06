@@ -39,8 +39,10 @@
 
 typedef __u32    __kernel_dev_t;
 
+typedef __kernel_clock_t     clock_t;
 typedef __kernel_dev_t       dev_t;
 typedef __kernel_ino_t       ino_t;
+typedef __kernel_mode_t      mode_t;
 #ifndef _OFF_T_DEFINED_
 #define _OFF_T_DEFINED_
 typedef __kernel_off_t       off_t;
@@ -56,6 +58,8 @@ typedef int  ssize_t;
 #endif
 
 typedef __kernel_uid32_t        uid_t;
+
+typedef __kernel_timer_t	timer_t;
 
 #include <win/sys/types.h>
 

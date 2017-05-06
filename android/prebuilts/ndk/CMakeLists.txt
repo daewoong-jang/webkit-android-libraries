@@ -12,16 +12,18 @@ set(NDK_SOURCES
     ${NDK_SOURCE_DIR}/libgen.cpp
     ${NDK_SOURCE_DIR}/netdb.cpp
     ${NDK_SOURCE_DIR}/poll.cpp
+    ${NDK_SOURCE_DIR}/signal.cpp
     ${NDK_SOURCE_DIR}/stdlib.cpp
     ${NDK_SOURCE_DIR}/unistd.cpp
+
     ${NDK_SOURCE_DIR}/arpa/inet.cpp
-    
+
     ${NDK_SOURCE_DIR}/sys/mman.cpp
     ${NDK_SOURCE_DIR}/sys/select.cpp
     ${NDK_SOURCE_DIR}/sys/socket.cpp
     ${NDK_SOURCE_DIR}/sys/system_properties.cpp
     ${NDK_SOURCE_DIR}/sys/time.cpp
-    
+
     ${NDK_SOURCE_DIR}/win/osf.cpp
     ${NDK_SOURCE_DIR}/win/socketpair.c
     ${NDK_SOURCE_DIR}/win/timer_resolution_controller.cpp

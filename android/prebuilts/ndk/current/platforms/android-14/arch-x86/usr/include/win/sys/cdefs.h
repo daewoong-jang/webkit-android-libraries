@@ -40,6 +40,13 @@
 #define	__static_cast(x,y)	(x)y
 #endif
 
+#if defined(_M_IX86)
+#define __i386__ 1
+#endif
+#if defined(_M_X64)
+#define __x86_64__ 1
+#endif
+
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif

@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 NAVER Corp. All rights reserved.
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -48,4 +49,4 @@ extern int    munmap(void *, size_t);
 
 __END_DECLS
 
-#endif // _SYS_MMAN_H_
+#endif /* _SYS_MMAN_H_ */

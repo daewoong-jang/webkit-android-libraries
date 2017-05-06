@@ -9,32 +9,31 @@
  ***
  ****************************************************************************
  ****************************************************************************/
-#ifndef _LINUX_LIMITS_H
-#define _LINUX_LIMITS_H
+#ifndef _ASMARM_SIGCONTEXT_H
+#define _ASMARM_SIGCONTEXT_H
 
-#define NR_OPEN 1024
-
-#define NGROUPS_MAX 65536
-#define ARG_MAX 131072
-#define CHILD_MAX 999
-#define OPEN_MAX 256
-#define LINK_MAX 127
-#define MAX_CANON 255
-#define MAX_INPUT 255
-#define NAME_MAX 255
-#define PATH_MAX 4096
-#define PIPE_BUF 4096
-#define XATTR_NAME_MAX 255
-#define XATTR_SIZE_MAX 65536
-#define XATTR_LIST_MAX 65536
-
-#define RTSIG_MAX 32
-
-/* from sys/limits.h */
-#ifdef __LP64__
-# define LONG_BIT   64
-#else
-# define LONG_BIT   32
-#endif
+struct sigcontext {
+ unsigned long trap_no;
+ unsigned long error_code;
+ unsigned long oldmask;
+ unsigned long arm_r0;
+ unsigned long arm_r1;
+ unsigned long arm_r2;
+ unsigned long arm_r3;
+ unsigned long arm_r4;
+ unsigned long arm_r5;
+ unsigned long arm_r6;
+ unsigned long arm_r7;
+ unsigned long arm_r8;
+ unsigned long arm_r9;
+ unsigned long arm_r10;
+ unsigned long arm_fp;
+ unsigned long arm_ip;
+ unsigned long arm_sp;
+ unsigned long arm_lr;
+ unsigned long arm_pc;
+ unsigned long arm_cpsr;
+ unsigned long fault_address;
+};
 
 #endif

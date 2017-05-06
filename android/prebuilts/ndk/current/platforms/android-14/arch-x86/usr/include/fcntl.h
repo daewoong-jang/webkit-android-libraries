@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 NAVER Corp. All rights reserved.
+ * Copyright (C) 2008 The Android Open Source Project
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -24,11 +25,11 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-
 #ifndef _FCNTL_H
 #define _FCNTL_H
 
 #include <sys/cdefs.h>
+#include <sys/types.h>
 
 #if defined(_MSC_VER)
 #undef  __STDC__
@@ -40,8 +41,6 @@
 
 #define	M_PI		3.14159265358979323846	/* pi */
 #define	M_PI_2		1.57079632679489661923	/* pi/2 */
-
-typedef	int	mode_t;	/* permissions */
 
 __BEGIN_DECLS
 

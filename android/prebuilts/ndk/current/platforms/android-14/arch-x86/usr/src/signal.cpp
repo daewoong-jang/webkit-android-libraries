@@ -1,6 +1,5 @@
 /*
- * Copyright (C) 2008 The Android Open Source Project
- * All rights reserved.
+ * Copyright (C) Daewoong Jang.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -25,31 +24,32 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef _ARPA_INET_H_
-#define _ARPA_INET_H_
 
-#include <sys/select.h>
-#include <stdint.h>
-#include <sys/types.h>
-#include <netinet/in.h>
+#include "signal.h"
 
-__BEGIN_DECLS
+#if defined(WIN32) || defined(_WINDOWS)
 
-typedef uint32_t in_addr_t;
+int sigaction(int signum, const struct sigaction * act, struct sigaction * oldact)
+{
+    if (signum == -1)
+        return 0;
+    if (oldact)
+        if ((oldact->sa_handler = signal(signum, act->sa_handler)) == SIG_ERR)
+            return -1;
+    else
+        if (signal(signum, SIG_DFL) == SIG_ERR)
+            return -1;
+    return 0;
+}
 
-extern uint32_t      inet_addr(const char *);
+int sigsuspend(const sigset_t * mask)
+{
+    return -1;
+}
 
-extern int           inet_aton(const char *, struct in_addr *);
-extern char*         inet_ntoa(struct in_addr);
+int sigaltstack(const stack_t *ss, stack_t *oss)
+{
+    return 0;
+}
 
-extern int           inet_pton(int, const char *, void *);
-extern const char*   inet_ntop(int, const void *, char *, size_t);
-
-extern unsigned int  inet_nsap_addr(const char *, unsigned char *, int);
-extern char*         inet_nsap_ntoa(int, const unsigned char *, char *);
-
-__END_DECLS
-
-#endif /* _ARPA_INET_H_ */
-
-
+#endif
