@@ -10,27 +10,16 @@ set(PTHREADNP_SOURCES
 add_definitions(-DBUILDING_PTHREADNP)
 
 if (WIN32)
+    add_subdirectory(pthreads-win32)
+
+    add_definitions(-DHAVE_SIGNAL_H)
 
     include_directories(
         "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/pthreads"
         "${CMAKE_SOURCE_DIR}/android/system/core/include"
     )
 
-    link_directories(${OUTPUT_DIR} "${CMAKE_SOURCE_DIR}/pthreadnp/pthreads-win32/lib$(PlatformArchitecture)")
-
     add_library(${NAME} SHARED ${PTHREADNP_SOURCES})
-
-    string(REPLACE "/" "\\" PTHREAD_DLL "${CMAKE_SOURCE_DIR}/pthreadnp/pthreads-win32/lib$(PLATFORMARCHITECTURE)/pthreadVC2.dll")
-    string(REPLACE "/" "\\" PTHREAD_DLL_PATH "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
-
-    string(REPLACE "/" "\\" PTHREAD_LIB "${CMAKE_SOURCE_DIR}/pthreadnp/pthreads-win32/lib$(PLATFORMARCHITECTURE)/pthreadVC2.lib")
-    string(REPLACE "/" "\\" PTHREAD_LIB_PATH "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
-
-    add_custom_command(TARGET ${NAME}
-                   PRE_BUILD
-                   COMMAND xcopy /y /d ${PTHREAD_DLL} ${PTHREAD_DLL_PATH} & xcopy /y /d ${PTHREAD_LIB} ${PTHREAD_LIB_PATH})
 
     set(LIBRARY_DEPS
         cutils

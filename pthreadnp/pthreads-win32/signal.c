@@ -86,16 +86,6 @@
 
 #if defined(HAVE_SIGSET_T)
 
-static void
-ptw32_signal_thread ()
-{
-}
-
-static void
-ptw32_signal_callhandler ()
-{
-}
-
 int
 pthread_sigmask (int how, sigset_t const *set, sigset_t * oset)
 {
@@ -162,18 +152,6 @@ pthread_sigmask (int how, sigset_t const *set, sigset_t * oset)
     }
 
   return 0;
-}
-
-int
-sigwait (const sigset_t * set, int *sig)
-{
-  /* This routine is a cancellation point */
-  pthread_test_cancel();
-}
-
-int
-sigaction (int signum, const struct sigaction *act, struct sigaction *oldact)
-{
 }
 
 #endif /* HAVE_SIGSET_T */

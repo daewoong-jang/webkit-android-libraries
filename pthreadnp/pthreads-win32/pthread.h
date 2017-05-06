@@ -572,13 +572,23 @@ extern "C"
 #if defined(_UWIN) && PTW32_LEVEL >= PTW32_LEVEL_MAX
 #   include     <sys/types.h>
 #else
+#if defined(HAVE_SYS_TYPES_H)
+#   include     <sys/types.h>
+#endif
 /*
  * Generic handle type - intended to extend uniqueness beyond
  * that available with a simple pointer. It should scale for either
  * IA-32 or IA-64.
  */
+#if defined(PTW32_BUILD)
+struct ptw32_thread_t_;
+#endif
 typedef struct {
+#if defined(PTW32_BUILD)
+    struct ptw32_thread_t_ * p;
+#else
     void * p;                   /* Pointer to actual object */
+#endif
     unsigned int x;             /* Extra information - reuse count etc */
 } ptw32_handle_t;
 
@@ -1158,6 +1168,8 @@ PTW32_DLLPORT int PTW32_CDECL pthread_rwlockattr_setpshared (pthread_rwlockattr_
  * already have signal.h that don't define these.
  */
 PTW32_DLLPORT int PTW32_CDECL pthread_kill(pthread_t thread, int sig);
+
+PTW32_DLLPORT int PTW32_CDECL pthread_sigmask(int how, sigset_t const *set, sigset_t * oset);
 
 /*
  * Non-portable functions

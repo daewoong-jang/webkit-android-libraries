@@ -27,8 +27,6 @@
 #define _PTHREADNP_PTHREAD_H_
 
 #if defined(WIN32)
-#include <sys/types.h>
-#define HAVE_MODE_T
 #include "pthreads-win32/pthread.h"
 #define PTHREAD_CALLBACK PTW32_CDECL
 
