@@ -811,6 +811,32 @@ typedef void (GL_APIENTRYP PFNGLSTARTTILINGQCOMPROC) (GLuint x, GLuint y, GLuint
 typedef void (GL_APIENTRYP PFNGLENDTILINGQCOMPROC) (GLbitfield preserveMask);
 #endif
 
+/*------------------------------------------------------------------------*
+ * ANGLE extension functions
+ *------------------------------------------------------------------------*/
+
+/* GL_EXT_robustness */
+#ifndef GL_EXT_robustness
+#define GL_EXT_robustness 1
+#define GL_GUILTY_CONTEXT_RESET_EXT       0x8253
+#define GL_INNOCENT_CONTEXT_RESET_EXT     0x8254
+#define GL_UNKNOWN_CONTEXT_RESET_EXT      0x8255
+#define GL_CONTEXT_ROBUST_ACCESS_EXT      0x90F3
+#define GL_RESET_NOTIFICATION_STRATEGY_EXT 0x8256
+#define GL_LOSE_CONTEXT_ON_RESET_EXT      0x8252
+#define GL_NO_RESET_NOTIFICATION_EXT      0x8261
+typedef GLenum (GL_APIENTRYP PFNGLGETGRAPHICSRESETSTATUSEXTPROC) (void);
+typedef void (GL_APIENTRYP PFNGLREADNPIXELSEXTPROC) (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void *data);
+typedef void (GL_APIENTRYP PFNGLGETNUNIFORMFVEXTPROC) (GLuint program, GLint location, GLsizei bufSize, GLfloat *params);
+typedef void (GL_APIENTRYP PFNGLGETNUNIFORMIVEXTPROC) (GLuint program, GLint location, GLsizei bufSize, GLint *params);
+#ifdef GL_GLEXT_PROTOTYPES
+GL_APICALL GLenum GL_APIENTRY glGetGraphicsResetStatusEXT (void);
+GL_APICALL void GL_APIENTRY glReadnPixelsEXT (GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, void *data);
+GL_APICALL void GL_APIENTRY glGetnUniformfvEXT (GLuint program, GLint location, GLsizei bufSize, GLfloat *params);
+GL_APICALL void GL_APIENTRY glGetnUniformivEXT (GLuint program, GLint location, GLsizei bufSize, GLint *params);
+#endif
+#endif /* GL_EXT_robustness */
+
 #ifdef __cplusplus
 }
 #endif

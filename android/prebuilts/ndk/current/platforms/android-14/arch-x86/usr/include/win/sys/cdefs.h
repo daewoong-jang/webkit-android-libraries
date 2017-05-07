@@ -78,9 +78,6 @@
 #include <timeapi.h>
 #include <linux/limits.h>
 
-#undef NO_ERROR
-#undef WAIT_FAILED
-
 #define alignof   __alignof
 
 #define __attribute__(x)
