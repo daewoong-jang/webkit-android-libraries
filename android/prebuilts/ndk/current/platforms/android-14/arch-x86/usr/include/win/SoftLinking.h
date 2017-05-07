@@ -31,6 +31,7 @@
 #define RELEASE_ASSERT assert
 
 #pragma mark - Soft-link helper macros
+#pragma warning(disable : 4098)
 
 #define SOFT_LINK_LIBRARY_HELPER(lib, suffix) \
     static HMODULE lib##Library() \

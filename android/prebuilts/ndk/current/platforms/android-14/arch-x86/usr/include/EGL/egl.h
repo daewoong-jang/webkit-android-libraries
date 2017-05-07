@@ -245,6 +245,9 @@ typedef void *EGLClientBuffer;
 
 
 /* EGL Functions */
+#if defined(_MSC_VER) && !defined(EGL_HARD_LINK)
+#include <win/EGL/eglsoftlinking.h>
+#else
 
 EGLAPI EGLint EGLAPIENTRY eglGetError(void);
 
@@ -321,6 +324,8 @@ typedef void (*__eglMustCastToProperFunctionPointerType)(void);
 /* Now, define eglGetProcAddress using the generic function ptr. type */
 EGLAPI __eglMustCastToProperFunctionPointerType EGLAPIENTRY
        eglGetProcAddress(const char *procname);
+
+#endif /* defined(_MSC_VER) && !defined(EGL_HARD_LINK) */
 
 #ifdef __cplusplus
 }

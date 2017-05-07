@@ -39,7 +39,7 @@
 #include <GLES2/gl2.h>
 #endif
 
-#if EGL_SOFT_LINKING
+#if !defined(EGL_HARD_LINK)
 #define eglGetDisplay eglGetDisplayPtr()
 #endif
 

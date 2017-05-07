@@ -156,9 +156,6 @@ include_directories(
 if (WIN32)
 
     include_directories(
-        "${ANGLE_LIBRARY_DIR}/include"
-        "${ANGLE_LIBRARY_DIR}"
-        "${CMAKE_SOURCE_DIR}/jpeg"
         "${CMAKE_SOURCE_DIR}/zlib"
     )
 
@@ -294,7 +291,7 @@ if (WIN32)
         boilerplate/cairo-boilerplate.c
     )
 
-    add_definitions(-DCAIRO_EXPORTS -DCAIRO_HAS_DLSYM=1 -DHAVE_STDINT_H=1 -DHAVE_UINT64_T=1 -D_WIN32_WINNT=0x0601)
+    add_definitions(-DCAIRO_EXPORTS -DHAVE_STDINT_H -DHAVE_UINT64_T -D_WIN32_WINNT=WINVER)
 
     add_library(${NAME} SHARED ${CAIRO_INCLUDES} ${CAIRO_SOURCES})
 
@@ -308,10 +305,6 @@ if (WIN32)
     )
 
 else ()
-
-    include_directories(
-        "${CMAKE_SOURCE_DIR}/jpeg-turbo"
-    )
 
     # add android dependent sources.
     set(CAIRO_SOURCES

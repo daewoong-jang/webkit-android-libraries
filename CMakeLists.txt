@@ -10,11 +10,6 @@ if (DEFINED ENV{WEBKIT_LIBRARIES})
 else ()
     set(WEBKIT_LIBRARIES_DIR "${CMAKE_BINARY_DIR}" CACHE PATH "Path to the directory where products will be copied to.")
 endif ()
-if (DEFINED ENV{ANGLE_LIBRARY})
-    set(ANGLE_LIBRARY_DIR "$ENV{ANGLE_LIBRARY}")
-else ()
-    set(ANGLE_LIBRARY_DIR "${WEBKIT_LIBRARIES_DIR}" CACHE PATH "Path to the directory where ANGLE library is located.")
-endif ()
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${WEBKIT_LIBRARIES_DIR})
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${WEBKIT_LIBRARIES_DIR})
@@ -31,7 +26,7 @@ if (WIN32)
     set(WIN32_SYSTEM_LIBRARIES concrt libcmt libcpmt msvcrt OLDNAMES Version vcruntime ucrt Shlwapi)
 
     add_definitions(-D_WINSOCKAPI_ -D__STDC_FORMAT_MACROS -DHAVE_STRUCT_TIMESPEC)
-    add_definitions(-DGL_GLEXT_PROTOTYPES -DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DLIBXML_STATIC -DLIBXSLT_STATIC)
+    add_definitions(-DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DLIBXML_STATIC -DLIBXSLT_STATIC)
 
     include_directories("${CMAKE_SOURCE_DIR}/android/prebuilts/ndk/current/platforms/android-14/arch-x86/usr/include")
 
