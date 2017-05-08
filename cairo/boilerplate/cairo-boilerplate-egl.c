@@ -39,10 +39,6 @@
 #include <GLES2/gl2.h>
 #endif
 
-#if !defined(EGL_HARD_LINK)
-#define eglGetDisplay eglGetDisplayPtr()
-#endif
-
 static const cairo_user_data_key_t gl_closure_key;
 
 typedef struct _egl_target_closure {

@@ -300,6 +300,7 @@ if (WIN32)
         png
         z
         dl
+        log
         msimg32
         ${WIN32_SYSTEM_LIBRARIES}
     )

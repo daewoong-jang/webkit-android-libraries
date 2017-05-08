@@ -26,9 +26,23 @@
 #define SoftLinking_h
 
 #include <windows.h>
-#include <assert.h>
-#define ASSERT assert
-#define RELEASE_ASSERT assert
+#include <android/log.h>
+
+#define __ANDROID_LOG_ASSERT_IF(cond) \
+    ( ((cond) != 0) \
+    ? ((void)__android_log_assert(#cond, "", "")) \
+    : (void)0 )
+
+#ifndef ASSERT
+#ifdef NDEBUG
+#define ASSERT(cond) ((void)0)
+#else
+#define ASSERT(cond) __ANDROID_LOG_ASSERT_IF(!cond)
+#endif
+#endif
+#ifndef RELEASE_ASSERT
+#define RELEASE_ASSERT(cond)  __ANDROID_LOG_ASSERT_IF(!cond)
+#endif
 
 #pragma mark - Soft-link helper macros
 #pragma warning(disable : 4098)

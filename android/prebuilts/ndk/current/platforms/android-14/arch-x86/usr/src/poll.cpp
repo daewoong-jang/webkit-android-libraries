@@ -32,7 +32,7 @@
 
 #include "win/unixfd.h"
 
-int poll(struct pollfd * fds, nfds_t nfds, long timeout)
+int poll(struct pollfd * fds, nfds_t nfds, int timeout)
 {
     size_t bytes = sizeof(pollfd) * nfds;
     pollfd* _fds = (pollfd*)::malloc(bytes);
