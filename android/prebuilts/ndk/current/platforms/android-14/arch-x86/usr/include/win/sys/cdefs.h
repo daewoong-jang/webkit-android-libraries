@@ -75,6 +75,11 @@
 #ifndef near
 #define near
 #endif
+#ifndef NOUSER
+#define DOUBLE COMDOUBLE
+#include <unknwn.h>
+#undef DOUBLE
+#endif
 #include <timeapi.h>
 #include <linux/limits.h>
 
