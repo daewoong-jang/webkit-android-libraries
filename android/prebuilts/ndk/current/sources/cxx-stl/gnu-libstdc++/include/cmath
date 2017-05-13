@@ -594,6 +594,10 @@ _GLIBCXX_BEGIN_NAMESPACE_VERSION
   log2(float __x)
   { return log(__x) / log(2.0f); }
 
+  inline double
+  log2(double __x)
+  { return log(__x) / log(2.0f); }
+
   inline long double
   log2(long double __x)
   { return log(__x) / log(2.0); }

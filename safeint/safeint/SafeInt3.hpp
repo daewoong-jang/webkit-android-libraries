@@ -105,10 +105,8 @@ Please read the leading comments before using the class.
 #endif
 
 // GCC warning suppression
-#if SAFEINT_COMPILER == GCC_COMPILER
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
-#endif
 
 #include <stdint.h>
 
@@ -696,13 +694,13 @@ namespace SafeIntInternal
         static SAFEINT_NORETURN void SAFEINT_STDCALL SafeIntOnOverflow()
         {
             SafeIntExceptionAssert();
-            //throw SafeIntException( SafeIntArithmeticOverflow );
+            abort();//throw SafeIntException( SafeIntArithmeticOverflow );
         }
 
         static SAFEINT_NORETURN void SAFEINT_STDCALL SafeIntOnDivZero()
         {
             SafeIntExceptionAssert();
-            //throw SafeIntException( SafeIntDivideByZero );
+            abort();//throw SafeIntException( SafeIntDivideByZero );
         }
     };
 

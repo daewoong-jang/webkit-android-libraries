@@ -26,6 +26,7 @@
 #ifndef _SAFEINT_H_INCLUDED_
 #define _SAFEINT_H_INCLUDED_
 
+#include <stdlib.h>
 #include "SafeInt3.hpp"
 
 #include <limits>
