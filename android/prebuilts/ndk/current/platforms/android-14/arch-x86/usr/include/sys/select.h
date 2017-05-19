@@ -29,6 +29,7 @@
 #ifndef _SYS_SELECT_H_
 #define _SYS_SELECT_H_
 
+#include <process.h>
 #include <win/ws2_shims.h>
 
 #undef  FD_SETSIZE

@@ -38,7 +38,6 @@
 #include <io.h>
 #undef  __STDC__
 #include <process.h>
-#include <shlwapi.h>
 #include <sys/stat.h>
 
 #undef lseek

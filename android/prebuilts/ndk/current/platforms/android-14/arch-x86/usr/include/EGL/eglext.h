@@ -248,6 +248,8 @@ typedef EGLuint64NV (EGLAPIENTRYP PFNEGLGETSYSTEMTIMEFREQUENCYNVPROC)(void);
 typedef EGLuint64NV (EGLAPIENTRYP PFNEGLGETSYSTEMTIMENVPROC)(void);
 #endif
 
+#ifndef NO_ANGLE_EGL_EXTENSIONS
+
 #ifndef EGL_EXT_create_context_robustness
 #define EGL_EXT_create_context_robustness 1
 #define EGL_CONTEXT_OPENGL_ROBUST_ACCESS_EXT 0x30BF
@@ -255,6 +257,21 @@ typedef EGLuint64NV (EGLAPIENTRYP PFNEGLGETSYSTEMTIMENVPROC)(void);
 #define EGL_NO_RESET_NOTIFICATION_EXT     0x31BE
 #define EGL_LOSE_CONTEXT_ON_RESET_EXT     0x31BF
 #endif /* EGL_EXT_create_context_robustness */
+
+#ifndef EGL_ANGLE_d3d_share_handle_client_buffer
+#define EGL_ANGLE_d3d_share_handle_client_buffer 1
+#define EGL_D3D_TEXTURE_2D_SHARE_HANDLE_ANGLE 0x3200
+#endif /* EGL_ANGLE_d3d_share_handle_client_buffer */
+
+#ifndef EGL_ANGLE_query_surface_pointer
+#define EGL_ANGLE_query_surface_pointer 1
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYSURFACEPOINTERANGLEPROC) (EGLDisplay dpy, EGLSurface surface, EGLint attribute, void **value);
+#ifdef EGL_EGLEXT_PROTOTYPES
+EGLAPI EGLBoolean EGLAPIENTRY eglQuerySurfacePointerANGLE (EGLDisplay dpy, EGLSurface surface, EGLint attribute, void **value);
+#endif
+#endif /* EGL_ANGLE_query_surface_pointer */
+
+#endif /* NO_ANGLE_EGL_EXTENSIONS */
 
 #ifdef __cplusplus
 }
