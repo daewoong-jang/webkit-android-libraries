@@ -27,6 +27,7 @@ if (WIN32)
 
     add_definitions(-D_WINSOCKAPI_ -D__STDC_FORMAT_MACROS -DHAVE_STRUCT_TIMESPEC)
     add_definitions(-DCAIRO_WIN32_STATIC_BUILD -DCURL_STATICLIB -DLIBXML_STATIC -DLIBXSLT_STATIC)
+    add_compile_options(/wd4668)
 
     include_directories("${CMAKE_SOURCE_DIR}/android/prebuilts/ndk/current/platforms/android-14/arch-x86/usr/include")
 

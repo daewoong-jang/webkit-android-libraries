@@ -102,6 +102,4 @@ endif()
 
 add_library(simd OBJECT ${SIMD_SRC})
 set(SIMD_OBJS $<TARGET_OBJECTS:simd> PARENT_SCOPE)
-else() # NOT ANDROID
-message(FATAL_ERROR "Unsupported platform.")
 endif() # NOT ANDROID

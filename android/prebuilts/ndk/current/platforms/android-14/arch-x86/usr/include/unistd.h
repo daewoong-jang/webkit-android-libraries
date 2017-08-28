@@ -33,32 +33,20 @@
 
 #include <direct.h>
 #include <stdio.h>
+#include <process.h>
 #undef  __STDC__
 #define __STDC__ 1
 #include <io.h>
 #undef  __STDC__
-#include <process.h>
+#include <corecrt.h>
+#include <sys/types.h>
+#define RC_INVOKED 1
 #include <sys/stat.h>
+#undef  RC_INVOKED
 
 #undef lseek
 
 __BEGIN_DECLS
-
-#define O_CREAT _O_CREAT
-#define O_EXCL  _O_EXCL
-#define S_IRUSR _S_IREAD
-#define S_IWUSR _S_IWRITE
-#define S_IRGRP _S_IREAD
-#define S_IWGRP _S_IWRITE
-#define S_IXUSR 0
-#define S_IXGRP 0
-#define F_OK    0
-
-#define S_ISDIR(m) ((m) == S_IFDIR)
-#define S_ISREG(m) (((m) & S_IFMT) == S_IFREG)
-
-#undef  mkdir
-#define mkdir(a, b)     _mkdir(a)
 
 extern pid_t    gettid(void);
 

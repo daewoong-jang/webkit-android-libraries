@@ -27,6 +27,29 @@
 #ifndef _WIN32_DEPRECATED_H_
 #define _WIN32_DEPRECATED_H_
 
+_CRT_BEGIN_C_HEADER
+
+#define O_CREAT    _O_CREAT
+#define O_EXCL     _O_EXCL
+#define S_IRUSR    _S_IREAD
+#define S_IWUSR    _S_IWRITE
+#define S_IRGRP    _S_IREAD
+#define S_IWGRP    _S_IWRITE
+#define S_IXUSR    0
+#define S_IXGRP    0
+#define F_OK       0
+
+#define _S_IFLNK   0x5000 // Hack: Directory + Pipe = Link
+
+#define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
+#define S_ISLNK(m) (((m) & _S_IFLNK) == _S_IFLNK)
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+
+extern int __cdecl stat(char const* const _FileName, struct stat* const _Stat);
+
+#undef  mkdir
+#define mkdir(a, b)     _mkdir(a)
+
 #define fdopen          _fdopen
 #define fileno          _fileno
 #define getcwd          _getcwd
@@ -38,5 +61,7 @@
 
 #define _open_osfhandle win32_open_osfhandle
 #define _get_osfhandle  win32_get_osfhandle
+
+_CRT_END_C_HEADER
 
 #endif /* _WIN32_DEPRECATED_H_ */

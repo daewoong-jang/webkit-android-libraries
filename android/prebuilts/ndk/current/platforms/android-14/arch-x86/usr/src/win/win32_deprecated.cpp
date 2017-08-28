@@ -41,6 +41,18 @@ char *  __cdecl strdup(_In_opt_z_ const char * _Src)
     return _strdup(_Src);
 }
 
+int __cdecl     stat(char const* const _FileName, struct stat* const _Stat)
+{
+    _STATIC_ASSERT(sizeof(struct stat) == sizeof(struct _stat64i32));
+    DWORD attr = GetFileAttributesA(_FileName);
+    if (attr ==  INVALID_FILE_ATTRIBUTES)
+        return -1;
+    int retval = _stat64i32(_FileName, (struct _stat64i32*)_Stat);
+    if (attr & FILE_ATTRIBUTE_REPARSE_POINT)
+        _Stat->st_mode = _S_IFLNK;
+    return retval;
+}
+
 }
 
 #endif
