@@ -29,7 +29,7 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 #include "win/timer_resolution_controller.h"
 #include <assert.h>
 
@@ -72,7 +72,7 @@ void FD_ZERO(fd_set * set)
 
 int  FD_ISSET(int fd, fd_set * set)
 {
-    return __WSAFDIsSet((SOCKET)UnixFD::get(fd)->osHandle(), (fd_set FAR *)(set)) != 0;
+    return __WSAFDIsSet((SOCKET)Win32File::of(fd)->handle(), (fd_set FAR *)(set)) != 0;
 }
 
 static fd_set * convert_fd_set(fd_set * set)
@@ -81,9 +81,9 @@ static fd_set * convert_fd_set(fd_set * set)
         return 0;
 
     for (u_int i = 0; i < set->fd_count; ++i) {
-        UnixFD* fd = UnixFD::get(set->fd_array[i]);
-        assert(fd->descriptorType() == UnixFD::Socket);
-        set->fd_array[i] = (SOCKET)fd->osHandle();
+        Win32File* fd = Win32File::of(set->fd_array[i]);
+        assert(fd->is(Win32File::Type::Socket));
+        set->fd_array[i] = (SOCKET)fd->handle();
     }
     return set;
 }

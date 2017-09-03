@@ -29,14 +29,14 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 
 int  open(const char*  path, int  flags, ...)
 {
     va_list args;
     va_start(args, flags);
     int mode = va_arg(args, int);
-    int retval = UnixFD::open(path, flags, mode);
+    int retval = Win32File::open(path, flags, mode);
     va_end(args);
     return retval;
 }
@@ -46,14 +46,14 @@ int fcntl(int fd, int command, ...)
     va_list args;
     va_start(args, command);
     int flags = va_arg(args, int);
-    int retval = UnixFD::get(fd)->fcntl(command, flags);
+    int retval = Win32File::of(fd)->fcntl(command, flags);
     va_end(args);
     return retval;
 }
 
 int  creat(const char*  path, mode_t  mode)
 {
-    return UnixFD::open(path, _O_TRUNC | _O_CREAT, mode);
+    return Win32File::open(path, _O_TRUNC | _O_CREAT, mode);
 }
 
 #endif

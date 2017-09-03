@@ -24,31 +24,37 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef _UNIXFD_H_
-#define _UNIXFD_H_
+#ifndef _WIN32_FILE_H_
+#define _WIN32_FILE_H_
 
+#include <functional>
+#include <memory>
 #include <unistd.h>
 
-class UnixFD {
+class Win32File {
 public:
-    enum Type {
+    enum class Type {
         Unknown,
         File,
         Socket,
-        PagingFile
+        Map
     };
 
+    static Win32File* of(int);
+
+    bool is(Type type) const;
+    bool isValid() const;
+
+    int fd() const;
+    Type type() const;
+    void* handle() const;
+    void setHandle(void* handle, Type type);
+
+    static int open(void* handle, Type type, int fd, pid_t sourcePid);
     static int open(const char * filename, int openFlag, int permissionMode);
     static int sopen(const char * filename, int openFlag, int shareFlag, int permissionMode);
-    static int socket(int address_family, int type, int protocol);
+    static int socket(int addressFamily, int type, int protocol);
     static int socketpair(int* fds, int make_overlapped);
-
-    static UnixFD* create(Type);
-    static UnixFD* get(int);
-
-    static int adopt(void* oshandle, Type type);
-    static int adopt(void* oshandle, Type type, int fd);
-    static int adopt(pid_t source_pid, void* oshandle, Type type);
 
     int accept(struct sockaddr * addr, int * addrlen);
 
@@ -62,37 +68,30 @@ public:
     int write(const void *, size_t, unsigned int);
     int eof();
 
-    int dup();
-    int dup2(int);
+    int dup(int = -1);
+
+    static int stat(const char * filename, struct stat* out);
+    static int fstat(int handle, struct stat* out);
+    static int lstat(const char * filename, struct stat* out);
 
     int isatty();
 
     int fcntl(int command, int flags);
 
-    int chsize(long _Size);
+    int chsize(long size);
     long filelength();
 
-    int locking(int _LockMode, long _NumOfBytes);
-    int setmode(int _Mode);
-
-    void* osHandle() const { return m_osHandle; }
-    void setOSHandle(void* handle) { m_osHandle = handle; }
-    int descriptorId() const { return m_descriptorId; }
-
-    Type descriptorType() const { return m_type; }
-    bool isSocket() const { return m_type == Socket; }
+    int locking(int lockMode, long numOfBytes);
+    int setmode(int mode);
 
 private:
-    UnixFD(void*, int, int, Type);
-    ~UnixFD();
+    Win32File(void*, Type, int);
+    ~Win32File();
 
-    int osfd();
-
-    void* m_osHandle;
-    int m_osfd;
-    int m_descriptorId;
+    int m_fd;
     Type m_type;
+    void* m_handle;
     int m_flags;
 };
 
-#endif /* _UNIXFD_H_ */
+#endif /* _WIN32_FILE_H_ */

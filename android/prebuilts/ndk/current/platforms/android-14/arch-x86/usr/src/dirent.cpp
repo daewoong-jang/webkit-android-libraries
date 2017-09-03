@@ -32,6 +32,14 @@
 #include <windows.h>
 #include <errno.h>
 
+struct DIR {
+    intptr_t findhandle;
+    struct _finddata_t finddata;
+    struct dirent d;
+    char overflow[MAX_PATH - sizeof(dirent::d_name)];
+    char name[MAX_PATH];
+};
+
 static DIR* allocDir()
 {
     DIR* dir = new DIR;
@@ -77,8 +85,23 @@ dirent* readdir(DIR* dir)
     if (!dir || dir->findhandle == -1)
         return 0;
 
-    if (!dir->d.d_name || _findnext(dir->findhandle, &dir->finddata) != -1) {
-        dir->d.d_name = dir->finddata.name;
+    bool ok = false;
+    while ((!dir->d.d_name || _findnext(dir->findhandle, &dir->finddata) != -1) && !ok) {
+        HANDLE hfile = CreateFileA(dir->finddata.name, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        if (hfile == INVALID_HANDLE_VALUE)
+            continue;
+        BY_HANDLE_FILE_INFORMATION info;
+        if (GetFileInformationByHandle(hfile, &info) == FALSE)
+            continue;
+        dir->d.d_ino = (info.nFileIndexHigh << sizeof(DWORD)) | info.nFileIndexLow;
+        dir->d.d_off = -1;
+        dir->d.d_reclen = GetFullPathNameA(dir->finddata.name, MAX_PATH, dir->d.d_name, NULL);
+        if (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            dir->d.d_type = DT_DIR;
+        else if (info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL)
+            dir->d.d_type = DT_REG;
+        else if (info.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)
+            dir->d.d_type = DT_LNK;
         errno = 0;
         return &dir->d;
     }

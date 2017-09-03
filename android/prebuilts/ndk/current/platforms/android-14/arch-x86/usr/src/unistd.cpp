@@ -31,7 +31,7 @@
 
 #include "sys/select.h"
 #include "sys/socket.h"
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 
 #include <errno.h>
 
@@ -55,34 +55,50 @@ int pipe(int * pipefd)
     return socketpair(AF_UNIX, SOCK_STREAM, 0, pipefd);
 }
 
+int symlink(const char * target, const char * linkpath)
+{
+    DWORD attributes = GetFileAttributesA(target);
+    if (attributes == INVALID_FILE_ATTRIBUTES) {
+        errno = ENOENT;
+        return -1;
+    }
+
+    if (!CreateSymbolicLinkA(linkpath, target, (attributes & FILE_ATTRIBUTE_DIRECTORY) ? SYMBOLIC_LINK_FLAG_DIRECTORY : 0)) {
+        errno = EACCES;
+        return -1;
+    }
+
+    return 0;
+}
+
 int close(int fildes)
 {
-    return (fildes > 0 && UnixFD::get(fildes))?UnixFD::get(fildes)->close():EBADF;
+    return (fildes > 0 && Win32File::of(fildes)) ? Win32File::of(fildes)->close() : EBADF;
 }
 
 off_t lseek(int fildes, off_t offset, int whence)
 {
-    return UnixFD::get(fildes)->lseek(offset, whence);
+    return Win32File::of(fildes)->lseek(offset, whence);
 }
 
 int read(int fildes, void * buf, size_t nbyte)
 {
-    return UnixFD::get(fildes)->read(buf, nbyte, 0);
+    return Win32File::of(fildes)->read(buf, nbyte, 0);
 }
 
 int write(int fildes, const void * buf, size_t count)
 {
-    return UnixFD::get(fildes)->write(buf, count, 0);
+    return Win32File::of(fildes)->write(buf, count, 0);
 }
 
 int dup(int fildes)
 {
-    return (fildes > 0) ? UnixFD::get(fildes)->dup() : -1;
+    return (fildes > 0) ? Win32File::of(fildes)->dup() : -1;
 }
 
 int dup2(int oldfd, int newfd)
 {
-    return (oldfd > 0) ? UnixFD::get(oldfd)->dup2(newfd) : -1;
+    return (oldfd > 0) ? Win32File::of(oldfd)->dup(newfd) : -1;
 }
 
 int ioctl(int fd, int request, ssize_t* va)
@@ -92,7 +108,7 @@ int ioctl(int fd, int request, ssize_t* va)
 
 int ftruncate(int fildes, off_t length)
 {
-    return UnixFD::get(fildes)->chsize(length);
+    return Win32File::of(fildes)->chsize(length);
 }
 
 unsigned sleep(unsigned seconds)
@@ -119,62 +135,7 @@ long getpagesize(void)
 
 int isatty(int fildes)
 {
-    return UnixFD::get(fildes)->isatty();
-}
-
-int __cdecl     chmod(_In_z_ const char * _Filename, int _AccessMode)
-{
-    return _chmod(_Filename, _AccessMode);
-}
-
-int __cdecl     chsize(_In_ int _FileHandle, _In_ long _Size)
-{
-    return UnixFD::get(_FileHandle)->chsize(_Size);
-}
-
-int __cdecl     eof(_In_ int _FileHandle)
-{
-    return UnixFD::get(_FileHandle)->eof();
-}
-
-long __cdecl    filelength(_In_ int _FileHandle)
-{
-    return UnixFD::get(_FileHandle)->filelength();
-}
-
-int __cdecl     locking(_In_ int _FileHandle, _In_ int _LockMode, _In_ long _NumOfBytes)
-{
-    return UnixFD::get(_FileHandle)->locking(_LockMode, _NumOfBytes);
-}
-
-char * __cdecl  mktemp(_Inout_z_ char * _TemplateName)
-{
-    return _mktemp(_TemplateName);
-}
-
-int __cdecl     setmode(_In_ int _FileHandle, _In_ int _Mode)
-{
-    return UnixFD::get(_FileHandle)->setmode(_Mode);
-}
-
-int __cdecl     sopen(const char * _Filename, _In_ int _OpenFlag, _In_ int _ShareFlag, ...)
-{
-    va_list args;
-    va_start(args, _ShareFlag);
-    int _Mode = va_arg(args, int);
-    int retval = UnixFD::sopen(_Filename, _OpenFlag, _ShareFlag, _Mode);
-    va_end(args);
-    return retval;
-}
-
-long __cdecl    tell(_In_ int _FileHandle)
-{
-    return UnixFD::get(_FileHandle)->tell();
-}
-
-int __cdecl     umask(_In_ int _Mode)
-{
-    return _umask(_Mode);
+    return Win32File::of(fildes)->isatty();
 }
 
 #endif

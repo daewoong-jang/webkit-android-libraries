@@ -30,6 +30,7 @@
 
 #include <sys/cdefs.h>
 #include <sys/types.h>
+#include <unistd.h>  /* this is not required, but makes client code much happier */
 
 #if defined(_MSC_VER)
 #undef  __STDC__

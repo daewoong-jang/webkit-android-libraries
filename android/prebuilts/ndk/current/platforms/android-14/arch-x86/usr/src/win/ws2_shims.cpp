@@ -29,18 +29,18 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 
 extern "C" {
 
 int     WSAAPI  closesocket(SOCKET s)
 {
-    return FORWARD_CALL(CLOSESOCKET)((SOCKET)UnixFD::get(s)->osHandle());
+    return FORWARD_CALL(CLOSESOCKET)((SOCKET)Win32File::of(s)->handle());
 }
 
 int     WSAAPI  ioctlsocket(SOCKET s, long cmd, _Inout_ u_long FAR* argp)
 {
-    return FORWARD_CALL(IOCTLSOCKET)((SOCKET)UnixFD::get(s)->osHandle(), cmd, argp);
+    return FORWARD_CALL(IOCTLSOCKET)((SOCKET)Win32File::of(s)->handle(), cmd, argp);
 }
 
 u_long  WSAAPI  htonl(u_long hostlong)
@@ -87,7 +87,7 @@ int     WSAAPI  WSAIoctl(SOCKET s, DWORD dwIoControlCode, _In_reads_bytes_opt_(c
     _Out_writes_bytes_to_opt_(cbOutBuffer, *lpcbBytesReturned) LPVOID lpvOutBuffer, DWORD cbOutBuffer, _Out_ LPDWORD lpcbBytesReturned,
     _Inout_opt_ LPWSAOVERLAPPED lpOverlapped, _In_opt_ LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine)
 {
-    return FORWARD_CALL(WSAIOCTL)((SOCKET)UnixFD::get(s)->osHandle(), dwIoControlCode, lpvInBuffer, cbInBuffer, lpvOutBuffer, cbOutBuffer, lpcbBytesReturned, lpOverlapped, lpCompletionRoutine);
+    return FORWARD_CALL(WSAIOCTL)((SOCKET)Win32File::of(s)->handle(), dwIoControlCode, lpvInBuffer, cbInBuffer, lpvOutBuffer, cbOutBuffer, lpcbBytesReturned, lpOverlapped, lpCompletionRoutine);
 }
 
 int PASCAL FAR  __WSAFDIsSet(SOCKET fd, fd_set FAR * set)

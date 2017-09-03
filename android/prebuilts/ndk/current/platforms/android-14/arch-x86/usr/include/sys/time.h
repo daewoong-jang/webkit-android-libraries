@@ -42,6 +42,8 @@ struct timezone
 
 extern int gettimeofday(struct timeval *, struct timezone *);
 
+extern int utimes(const char *, const struct timeval *);
+
 __END_DECLS
 
 #endif /* _SYS_TIME_H_ */

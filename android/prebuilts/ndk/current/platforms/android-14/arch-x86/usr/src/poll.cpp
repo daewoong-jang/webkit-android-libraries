@@ -30,7 +30,7 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 
 int poll(struct pollfd * fds, nfds_t nfds, int timeout)
 {
@@ -39,9 +39,9 @@ int poll(struct pollfd * fds, nfds_t nfds, int timeout)
     memcpy(_fds, fds, bytes);
 
     for (nfds_t i = 0; i < nfds; ++i) {
-        UnixFD* ufd = UnixFD::get(_fds[i].fd);
-        assert(ufd->isSocket());
-        _fds[i].fd = (SOCKET)ufd->osHandle();
+        Win32File* ufd = Win32File::of(_fds[i].fd);
+        assert(ufd->is(Win32File::Type::Socket));
+        _fds[i].fd = (SOCKET)ufd->handle();
     }
 
     int retval = FORWARD_CALL(WSAPOLL)(_fds, nfds, timeout);

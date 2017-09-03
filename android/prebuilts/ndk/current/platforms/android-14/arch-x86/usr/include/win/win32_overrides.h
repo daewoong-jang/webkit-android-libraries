@@ -24,8 +24,8 @@
  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
-#ifndef _WIN32_DEPRECATED_H_
-#define _WIN32_DEPRECATED_H_
+#ifndef _WIN32_OVERRIDES_H_
+#define _WIN32_OVERRIDES_H_
 
 _CRT_BEGIN_C_HEADER
 
@@ -39,13 +39,31 @@ _CRT_BEGIN_C_HEADER
 #define S_IXGRP    0
 #define F_OK       0
 
-#define _S_IFLNK   0x5000 // Hack: Directory + Pipe = Link
+#define _S_IFLNK   (_S_IFREG | _S_IFCHR)
 
 #define S_ISDIR(m) (((m) & _S_IFMT) == _S_IFDIR)
-#define S_ISLNK(m) (((m) & _S_IFLNK) == _S_IFLNK)
+#define S_ISLNK(m) (((m) & _S_IFMT) == _S_IFLNK)
 #define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
 
+/* stat.h */
 extern int __cdecl stat(char const* const _FileName, struct stat* const _Stat);
+extern int __cdecl fstat(int const _FileHandle, struct stat* const _Stat);
+extern int __cdecl lstat(char const* const _FileName, struct stat* const _Stat);
+
+/* stdlib.h */
+extern int mkstemp(char *);
+
+/* links to windows-specific c-style functions */
+int __cdecl chmod(const char * _Filename, int _AccessMode);
+int __cdecl chsize(int _FileHandle, long _Size);
+int __cdecl eof(int _FileHandle);
+long __cdecl filelength(int _FileHandle);
+int __cdecl locking(int _FileHandle, int _LockMode, long _NumOfBytes);
+char * __cdecl mktemp(char * _TemplateName);
+int __cdecl setmode(int _FileHandle, int _Mode);
+int __cdecl sopen(const char * _Filename, int _OpenFlag, int _ShareFlag, ...);
+long __cdecl tell(int _FileHandle);
+int __cdecl umask(int _Mode);
 
 #undef  mkdir
 #define mkdir(a, b)     _mkdir(a)

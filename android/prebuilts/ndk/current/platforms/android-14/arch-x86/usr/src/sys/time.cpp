@@ -6,6 +6,7 @@
 #if defined(WIN32) || defined(_WINDOWS)
 #include <time.h>
 #include <windows.h>
+#include <sys/utime.h>
 
 #if defined(_MSC_VER) || defined(_MSC_EXTENSIONS)
 #define DELTA_EPOCH_IN_MICROSECS  11644473600000000Ui64
@@ -47,4 +48,11 @@ int gettimeofday(struct timeval *tv, struct timezone *tz)
 
     return 0;
 }
+
+int utimes(const char * filename, const struct timeval *tv)
+{
+    static_assert(sizeof(timeval) == sizeof(time_t), "Use 64-bit representation of time_t");
+    return _utime(filename, (_utimbuf*)tv);
+}
+
 #endif

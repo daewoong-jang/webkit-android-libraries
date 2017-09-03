@@ -27,8 +27,8 @@ set(NDK_SOURCES
     ${NDK_SOURCE_DIR}/win/osf.cpp
     ${NDK_SOURCE_DIR}/win/socketpair.c
     ${NDK_SOURCE_DIR}/win/timer_resolution_controller.cpp
-    ${NDK_SOURCE_DIR}/win/unixfd.cpp
-    ${NDK_SOURCE_DIR}/win/win32_deprecated.cpp
+    ${NDK_SOURCE_DIR}/win/win32_file.cpp
+    ${NDK_SOURCE_DIR}/win/win32_overrides.cpp
     ${NDK_SOURCE_DIR}/win/ws2_32.cpp
     ${NDK_SOURCE_DIR}/win/ws2_shims.cpp
 )
@@ -36,6 +36,7 @@ set(NDK_SOURCES
 include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/current/platforms/android-14/arch-x86/usr/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/current/platforms/android-14/arch-x86/usr/include/win"
+    "${CMAKE_CURRENT_SOURCE_DIR}/current/platforms/android-14/arch-x86/usr/src"
     "${CMAKE_SOURCE_DIR}/android/system/core/include"
 )
 

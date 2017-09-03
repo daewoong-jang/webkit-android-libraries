@@ -90,7 +90,7 @@ error:
 	close(fd);
 	return -1;
 #else
-    return pagingfile();
+    return win32_open_osfhandle_with_type(-1, 0, -1, 0);
 #endif
 }
 

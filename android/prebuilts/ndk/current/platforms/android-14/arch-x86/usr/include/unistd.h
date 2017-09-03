@@ -48,54 +48,41 @@
 
 __BEGIN_DECLS
 
-extern pid_t    gettid(void);
+extern pid_t gettid(void);
 
 /* Macros for access() */
-#define R_OK    4  /* Read */
-#define W_OK    2  /* Write */
-#define X_OK    1  /* Execute */
-#define F_OK    0  /* Existence */
+#define R_OK  4  /* Read */
+#define W_OK  2  /* Write */
+#define X_OK  1  /* Execute */
+#define F_OK  0  /* Existence */
 
-extern int      access(const char *, int);
-extern int      link(const char *, const char *);
-extern int      pipe(int *);
+extern int access(const char *, int);
+extern int link(const char *, const char *);
+extern int pipe(int *);
 
-extern int      close(int);
-extern off_t    lseek(int, off_t, int);
+extern int symlink(const char *, const char *);
 
-extern int      read(int, void *, size_t);
-extern int      write(int, const void *, size_t);
+extern int close(int);
+extern off_t lseek(int, off_t, int);
 
-extern int      dup(int);
-extern int      dup2(int, int);
-extern int      ioctl(int, int, ssize_t*);
-extern int      ftruncate(int, off_t);
+extern int read(int, void *, size_t);
+extern int write(int, const void *, size_t);
+
+extern int dup(int);
+extern int dup2(int, int);
+extern int ioctl(int, int, ssize_t*);
+extern int ftruncate(int, off_t);
 
 extern unsigned sleep(unsigned);
 
-extern int      gethostname(char *, size_t);
+extern int gethostname(char *, size_t);
 
-extern long     getpagesize (void);
+extern long getpagesize(void);
 
-extern int      isatty(int);
-
-/* stdlib.h */
-extern int      mkstemp (char *);
-
-/* links to windows-specific c-style functions */
-int __cdecl     chmod(const char * _Filename, int _AccessMode);
-int __cdecl     chsize(int _FileHandle, long _Size);
-int __cdecl     eof(int _FileHandle);
-long __cdecl    filelength(int _FileHandle);
-int __cdecl     locking(int _FileHandle, int _LockMode, long _NumOfBytes);
-char * __cdecl  mktemp(char * _TemplateName);
-int __cdecl     setmode(int _FileHandle, int _Mode);
-int __cdecl     sopen(const char * _Filename, int _OpenFlag, int _ShareFlag, ...);
-long __cdecl    tell(int _FileHandle);
-int __cdecl     umask(int _Mode);
+extern int isatty(int);
 
 __END_DECLS
 
-#include <win/win32_deprecated.h>
+#include <win/win32_overrides.h>
 
 #endif /* _UNISTD_H_ */

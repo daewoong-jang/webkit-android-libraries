@@ -29,7 +29,7 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
+#include "win/win32_file.h"
 #include <errno.h>
 #include <cutils/log.h>
 
@@ -45,37 +45,37 @@
 
 int socket(int address_family, int type, int protocol)
 {
-    return UnixFD::socket(address_family, type, protocol);
+    return Win32File::socket(address_family, type, protocol);
 }
 
 int bind(int socket, const struct sockaddr * address, int address_len)
 {
-    return FORWARD_CALL(BIND)((SOCKET)UnixFD::get(socket)->osHandle(), address, address_len);
+    return FORWARD_CALL(BIND)((SOCKET)Win32File::of(socket)->handle(), address, address_len);
 }
 
 int connect(int socket, const struct sockaddr * address, socklen_t address_len)
 {
-    return FORWARD_CALL(CONNECT)((SOCKET)UnixFD::get(socket)->osHandle(), address, address_len);
+    return FORWARD_CALL(CONNECT)((SOCKET)Win32File::of(socket)->handle(), address, address_len);
 }
 
 int listen(int socket, int backlog)
 {
-    return FORWARD_CALL(LISTEN)((SOCKET)UnixFD::get(socket)->osHandle(), backlog);
+    return FORWARD_CALL(LISTEN)((SOCKET)Win32File::of(socket)->handle(), backlog);
 }
 
 int accept(int socket, struct sockaddr *address, socklen_t *address_len)
 {
-    return UnixFD::get(socket)->accept(address, address_len);
+    return Win32File::of(socket)->accept(address, address_len);
 }
 
 int getsockname(int socket, struct sockaddr *address, socklen_t *address_len)
 {
-    return FORWARD_CALL(GETSOCKNAME)((SOCKET)UnixFD::get(socket)->osHandle(), address, address_len);
+    return FORWARD_CALL(GETSOCKNAME)((SOCKET)Win32File::of(socket)->handle(), address, address_len);
 }
 
 int getpeername(int socket, struct sockaddr *address, socklen_t *address_len)
 {
-    return FORWARD_CALL(GETPEERNAME)((SOCKET)UnixFD::get(socket)->osHandle(), address, address_len);
+    return FORWARD_CALL(GETPEERNAME)((SOCKET)Win32File::of(socket)->handle(), address, address_len);
 }
 
 int socketpair(int domain, int type, int protocol, int * socket_vector)
@@ -89,7 +89,7 @@ int socketpair(int domain, int type, int protocol, int * socket_vector)
     if (protocol != 0)
         return SOCKET_ERROR;
 
-    if (UnixFD::socketpair(socket_vector, 0) == SOCKET_ERROR)
+    if (Win32File::socketpair(socket_vector, 0) == SOCKET_ERROR)
         return SOCKET_ERROR;
 
     return 0;
@@ -97,17 +97,17 @@ int socketpair(int domain, int type, int protocol, int * socket_vector)
 
 int shutdown(int socket, int how)
 {
-    return FORWARD_CALL(SHUTDOWN)((SOCKET)UnixFD::get(socket)->osHandle(), how);
+    return FORWARD_CALL(SHUTDOWN)((SOCKET)Win32File::of(socket)->handle(), how);
 }
 
 int setsockopt(int socket, int level, int option_name, const void *option_value, socklen_t option_len)
 {
-    return FORWARD_CALL(SETSOCKOPT)((SOCKET)UnixFD::get(socket)->osHandle(), level, option_name, (const char*)option_value, option_len);
+    return FORWARD_CALL(SETSOCKOPT)((SOCKET)Win32File::of(socket)->handle(), level, option_name, (const char*)option_value, option_len);
 }
 
 int getsockopt(int socket, int level, int option_name, void *option_value, socklen_t *option_len)
 {
-    return FORWARD_CALL(GETSOCKOPT)((SOCKET)UnixFD::get(socket)->osHandle(), level, option_name, (char*)option_value, option_len);
+    return FORWARD_CALL(GETSOCKOPT)((SOCKET)Win32File::of(socket)->handle(), level, option_name, (char*)option_value, option_len);
 }
 
 /* packed msg format
@@ -169,7 +169,7 @@ static int blocking_writeall(int sock, char* buf, int buf_len, int timeout)
 {
     char* ptr = buf;
     int written = 0;
-    UnixFD* fd = UnixFD::get(sock);
+    Win32File* fd = Win32File::of(sock);
 
     while (written < buf_len) {
         int s = fd->write(ptr, buf_len - written, 0);
@@ -222,7 +222,7 @@ static int blocking_readall(int sock, char* buf, int buf_len, int timeout)
 {
     char* ptr = buf;
     int read = 0;
-    UnixFD* fd = UnixFD::get(sock);
+    Win32File* fd = Win32File::of(sock);
 
     while (read < buf_len) {
         int s = fd->read(ptr, buf_len - read, 0);
@@ -319,10 +319,10 @@ int sendmsg(int socket_descriptor, const struct msghdr * message, unsigned int f
                     continue;
                 }
                 struct packed_handle *hd = (struct packed_handle *)ctrlptr;
-                int new_fd = UnixFD::get(fdptr[i])->dup();
-                UnixFD* dup_fd = UnixFD::get(new_fd);
-                hd->handle = dup_fd->osHandle();
-                hd->fdtype = dup_fd->descriptorType();
+                int new_fd = Win32File::of(fdptr[i])->dup();
+                Win32File* dup_fd = Win32File::of(new_fd);
+                hd->handle = dup_fd->handle();
+                hd->fdtype = (int)dup_fd->type();
                 dup_fd->release();
                 ctrlptr += MSG_ALIGN(sizeof(struct packed_handle));
             }       
@@ -352,7 +352,7 @@ int recvmsg(int socket_descriptor, struct msghdr * message, unsigned int flags)
     if (flags & ~MSG_VALID_MASK)
         return SOCKET_ERROR;
 
-    UnixFD* socket = UnixFD::get(socket_descriptor);
+    Win32File* socket = Win32File::of(socket_descriptor);
 
     // read msg header
     struct packed_msg msghead;
@@ -434,9 +434,9 @@ int recvmsg(int socket_descriptor, struct msghdr * message, unsigned int flags)
         int res_count = 0;
         for (int i = 0; i < fd_count; i++) {
             struct packed_handle *hd = (struct packed_handle *)ctrlptr;
-            int adopt_fd = UnixFD::adopt(msghead.source_pid, hd->handle, (UnixFD::Type)hd->fdtype);
+            int adopt_fd = Win32File::open(hd->handle, (Win32File::Type)hd->fdtype, -1, msghead.source_pid);
             if (adopt_fd > 0) {
-                fdprt[res_count++] = UnixFD::get(adopt_fd)->descriptorId();
+                fdprt[res_count++] = Win32File::of(adopt_fd)->fd();
             } else {
                 ALOGE("receive wrong fd(%d) handle(%p) (socket:%d pid:%d)\n", adopt_fd, hd->handle, socket_descriptor, msghead.source_pid);
                 cmsg_header->cmsg_len--;
@@ -472,22 +472,22 @@ int recvmsg(int socket_descriptor, struct msghdr * message, unsigned int flags)
 
 ssize_t send(int socket, const void *message, size_t length, unsigned int flags)
 {
-    return UnixFD::get(socket)->write(message, length, flags);
+    return Win32File::of(socket)->write(message, length, flags);
 }
 
 ssize_t recv(int socket, void *buffer, size_t length, unsigned int flags)
 {
-    return UnixFD::get(socket)->read(buffer, length, flags);
+    return Win32File::of(socket)->read(buffer, length, flags);
 }
 
 ssize_t sendto(int socket, const void *message, size_t length, int flags, const struct sockaddr *dest_addr, socklen_t dest_len)
 {
-    return FORWARD_CALL(SENDTO)((SOCKET)UnixFD::get(socket)->osHandle(), (const char*)message, length, flags, dest_addr, dest_len);
+    return FORWARD_CALL(SENDTO)((SOCKET)Win32File::of(socket)->handle(), (const char*)message, length, flags, dest_addr, dest_len);
 }
 
 ssize_t recvfrom(int socket, void *buffer, size_t length, unsigned int flags, const struct sockaddr *address, socklen_t *address_len)
 {
-    return FORWARD_CALL(RECVFROM)((SOCKET)UnixFD::get(socket)->osHandle(), (char*)buffer, length, flags, (struct sockaddr *)address, address_len);
+    return FORWARD_CALL(RECVFROM)((SOCKET)Win32File::of(socket)->handle(), (char*)buffer, length, flags, (struct sockaddr *)address, address_len);
 }
 
 #endif

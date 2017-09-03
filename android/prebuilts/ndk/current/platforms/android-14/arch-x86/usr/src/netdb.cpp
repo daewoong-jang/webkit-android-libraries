@@ -29,8 +29,6 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "win/unixfd.h"
-
 struct hostent	*gethostbyaddr(const char * addr, int len, int type)
 {
     return FORWARD_CALL(GETHOSTBYADDR)(addr, len, type);

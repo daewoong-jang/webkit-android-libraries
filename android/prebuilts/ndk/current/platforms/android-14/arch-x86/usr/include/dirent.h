@@ -32,19 +32,32 @@
 
 __BEGIN_DECLS
 
+#ifndef DT_UNKNOWN
+#define  DT_UNKNOWN     0
+#define  DT_FIFO        1
+#define  DT_CHR         2
+#define  DT_DIR         4
+#define  DT_BLK         6
+#define  DT_REG         8
+#define  DT_LNK         10
+#define  DT_SOCK        12
+#define  DT_WHT         14
+#endif
+
+/* the following structure is really called dirent64 by the kernel
+ * headers. They also define a struct dirent, but the latter lack
+ * the d_type field which is required by some libraries (e.g. hotplug)
+ * who assume to be able to access it directly. sad...
+ */
 struct dirent {
-    long d_ino;
-    off_t d_off;
-    unsigned short d_reclen;
-    char* d_name;
+  uint64_t         d_ino;
+  int64_t          d_off;
+  unsigned short   d_reclen;
+  unsigned char    d_type;
+  char             d_name[256];
 };
 
-typedef struct __DIR {
-    intptr_t findhandle;
-    struct _finddata_t finddata;
-    struct dirent d;
-    char name[MAX_PATH];
-} DIR;
+typedef struct DIR DIR;
 
 extern  DIR*             opendir(const char* dirpath);
 extern  struct dirent*   readdir(DIR* dirp);

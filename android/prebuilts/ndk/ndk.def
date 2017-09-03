@@ -18,6 +18,8 @@ EXPORTS
     freeaddrinfo
     mmap
     munmap
+    msync
+    mprotect
     FD_CLR
     POSIX_FD_SET
     FD_ZERO
@@ -67,6 +69,8 @@ EXPORTS
     isatty
     mkstemp 
     chmod
+    fstat
+    stat
     chsize
     eof
     filelength
@@ -77,6 +81,7 @@ EXPORTS
     tell
     umask
     gettimeofday
+    utimes
     getpid
     strdup
     gethostbyaddr
@@ -87,6 +92,6 @@ EXPORTS
     sigsuspend
     sigaltstack
     win32_open_osfhandle
+    win32_open_osfhandle_with_type
     win32_release_osfhandle
     win32_get_osfhandle
-    pagingfile

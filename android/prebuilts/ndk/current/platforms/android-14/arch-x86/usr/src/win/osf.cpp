@@ -29,27 +29,26 @@
 
 #if defined(WIN32) || defined(_WINDOWS)
 
-#include "unixfd.h"
+#include "win32_file.h"
 
 int         win32_open_osfhandle(intptr_t _OSFileHandle, int _Flags, int _FileHandle)
 {
-    return UnixFD::adopt((void*)_OSFileHandle, UnixFD::Socket, _FileHandle);
+    return Win32File::open((void*)_OSFileHandle, Win32File::Type::File, _FileHandle, -1);
+}
+
+int         win32_open_osfhandle_with_type(intptr_t _OSFileHandle, int _Flags, int _FileHandle, _In_ int _FileType)
+{
+    return Win32File::open((void*)_OSFileHandle, (Win32File::Type)_FileType, _FileHandle, -1);
 }
 
 intptr_t    win32_release_osfhandle(int _FileHandle)
 {
-    return (intptr_t)UnixFD::get(_FileHandle)->release();
+    return (intptr_t)Win32File::of(_FileHandle)->release();
 }
 
 intptr_t    win32_get_osfhandle(_In_ int _FileHandle)
 {
-    return (intptr_t)UnixFD::get(_FileHandle)->osHandle();
+    return (intptr_t)Win32File::of(_FileHandle)->handle();
 }
-
-int         pagingfile()
-{
-    return UnixFD::create(UnixFD::PagingFile)->descriptorId();
-}
-
 
 #endif

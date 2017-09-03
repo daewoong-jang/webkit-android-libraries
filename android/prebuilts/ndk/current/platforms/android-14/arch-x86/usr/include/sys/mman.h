@@ -46,6 +46,8 @@ __BEGIN_DECLS
 
 extern void*  mmap(void *, size_t, int, int, int, off_t);
 extern int    munmap(void *, size_t);
+extern int    msync(const void *, size_t, int);
+extern int    mprotect(const void *, size_t, int);
 
 __END_DECLS
 
